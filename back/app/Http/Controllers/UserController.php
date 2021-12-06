@@ -49,13 +49,14 @@ class UserController extends Controller
 
         //check password
         if(!$user || !Hash::check($request->password, $user->password)){
-            return response()->json(['message' => 'Bad login'], 401);
+            return response()->json(['message' => 'Invalid Email Or Password']);  
         }
         //create token is a key can access to api
         // $token = $user->createToken('mytoken')->plainTextToken;
 
         return response()->json([
             'user' => $user,
+            'isLogin'=> true,
             // 'token' => $token,
         ]);
     }

@@ -9,7 +9,7 @@
 
 <script>
 import axios from "axios";
-const url = 'http://127.0.0.1:8000/api/';
+const url = 'http://localhost:8000/api/';
 
 export default {
   data() {
@@ -30,7 +30,8 @@ export default {
       },
       errorSignin:{
         errors_login: null, 
-      }
+      },
+
     }
   },
   provide() {
@@ -56,7 +57,6 @@ export default {
 
     // REGISTER USER ACCOUNT ==============================================================================================
     SignUp(info_user){
-
       const userInfo = {
         first_name: info_user.first_name,
         last_name: info_user.last_name,
@@ -69,6 +69,9 @@ export default {
       .then((response) => {
         this.containUsers = response.data;
         console.log(this.containUsers);
+        this.$router.push('home');
+        let username = this.containUsers.user.first_name + " " + this.containUsers.user.last_name;
+        localStorage.setItem('user_info',JSON.stringify(username));
       })
       .catch((error) => {
         this.errorSignUp.firtnameError = error.response.data.errors.first_name;
@@ -96,17 +99,15 @@ export default {
 
       axios.post(url+'login', contain_login_info)
       .then(response =>{
-        if(response.data.message !== 'undefinde'){
+        if(!response.data.isLogin){
           this.errorSignin.errors_login = response.data.message;
+        }else if(response.data.isLogin){
+          this.$router.push('home');
+           let username = response.data.user.first_name + " " + response.data.user.last_name;
+           localStorage.setItem('user_info',JSON.stringify(username));
         }
-         console.log(response.data);
-        
-      })
-      // .catch((error) => {
-      //   this.errorSignin.email_error = error.response.data.errors.email;
-      //   this.errorSignin.password_error = error.response.data.errors.password;
-      //   console.log(error.response.data.errors);
-      // })
+        console.log(response.data);
+      });
 
       loginInfo.email = "";
       loginInfo.password = "";

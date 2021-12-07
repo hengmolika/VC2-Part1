@@ -62,9 +62,8 @@ export default {
       this.$emit("categoryData", this.category_name);
       this.category_name = "";
     },
-    
   },
-
+  
 };
 </script>
 

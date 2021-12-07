@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Category::latest()->get();
     }
 
     /**
@@ -24,7 +25,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required|unique:categories"
+        ]);
+        $category = new Category();
+        $category->name = $request->name;
+        $category->save();
+        return response()->json(["message" => "Created successful", 'data' => $category],201);
     }
 
     /**
@@ -35,7 +42,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        return Category::findOrFail($id);
     }
 
     /**
@@ -47,7 +54,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            "name" => "required|unique:categories"
+        ]);
+        $category = Category::findOrFail($id);
+        $category->name = $request->name;
+        $category->save();
+        return response()->json(["message" => "Updated Success"],200);
+       
     }
 
     /**
@@ -58,6 +72,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $isDeleted = Category::destroy($id);
+        if($isDeleted === 1){
+            return response()->json(['message' => "Deleted successful"]);
+        }else{
+            return response()->json(["message" => "Id not found"]);
+        }
+    }
+
+    public function search($name) {
+        return Category::where('name','like', '%'. $name . '%')->get();
     }
 }

@@ -1,84 +1,80 @@
 <template>
   <section>
     <!-- Button to Open the Modal -->
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-toggle="modal"
-      data-target="#myModal"
-    >
-      Open modal
+    <button data-toggle="modal" data-target="#myModal" class="btn p-2">
+      Add Category +
     </button>
-
-    <!-- The Modal -->
     <div class="modal" id="myModal">
-      <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Create event category</h4>
-            <button type="button" class="btn btn-danger btn-circle" data-dismiss="modal"><i class="fa fa-times"></i>
+            <h4 class="modal-title" id="title">Create event category</h4>
+            <button
+              type="button"
+              class="btn btn-danger rounded rounded-circle"
+              data-dismiss="modal"
+            >
+              <i class="fa fa-times"></i>
             </button>
           </div>
-
           <!-- Modal body -->
-          <div class="modal-body">
-              <input type="text" class="form-control" placeholder="Event category" v-model="namecategory" required>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer" id="btn-create">
-            <button type="button" class="btn btn-block" @click="createCategory">Create</button>
-          </div>
+          <form>
+            <div class="modal-body">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Event category"
+                v-model="category_name"
+              />
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer" id="btn-create">
+              <button
+                type="button"
+                class="btn btn-block"
+                @click="addCategoryData"
+                data-dismiss="modal">
+                Create
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+ 
   </section>
 </template>
 <script>
-const url = "http://localhost:8000/";
+
 export default {
-    data() {
-      return {
-        categories: [],
-        namecategory: "",
-      };
+  emits: ["categoryData"],
+  props:['categoryName'],
+  
+  data() {
+    return {
+      category_name: '',
+    };
+  },
+
+  methods: {
+    addCategoryData() {
+      this.$emit("categoryData", this.category_name);
+      this.category_name = "";
     },
-    methods: {
-        createCategory() {
-            let categories = {name: this.namecategory};
-            axios.post(url, categories).then(() => {
-                    window.location.reload()
-                });
-        }
-    },
+    
+  },
+
 };
 </script>
-<style scoped>
-h4 {
-    color: #020269;
-}
-#btn-create button {
+
+<style>
+button {
+  padding: 10px;
   background: #020269;
-  color: white;
+  color: rgb(240, 236, 236);
 }
-.btn-circle.btn-xl {
-    width: 70px;
-    height: 70px;
-    padding: 10px 16px;
-    border-radius: 35px;
-    font-size: 24px;
-    line-height: 1.33;
+#title {
+  color: #020269;
 }
-
-.btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
-}
-
 </style>

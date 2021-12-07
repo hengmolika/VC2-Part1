@@ -4,9 +4,10 @@
     @register="SignUp" 
     @signIn="SignIn"> 
   </router-view>
+   <category-view> </category-view>
   </section>
+   
 </template>
-
 <script>
 import axios from "axios";
 const url = 'http://localhost:8000/api/';
@@ -20,6 +21,7 @@ export default {
         {title: "Find Event", url: "/find-event"},
         {title: "Category", url: "/category"},
       ],
+
       containUsers: [],
       errorSignUp: {
         firtnameError: null,

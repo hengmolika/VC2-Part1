@@ -1,20 +1,21 @@
 <template>
   <section>
-      <div class="contain-body">
-          <div class="form-field ">
-        <form @submit.prevent="loginInfo">
+    <div class="contain-body">
+        <h1 class="text-center p-4 font-weight-light">My Events Sign In</h1>
+    <div class="form-field">
+        <form action="#" @submit.prevent="addMyLogin">
             <div class="form-group text-style">
-                <hr class="new4">
-                <p class="btn-text text-light" id='nav-card'>Sign In Here</p>
-                <hr class="new4">
+                <hr>
+                <p class="btn-text">Sign In Here</p>
+                <hr>
             </div>
-            <p class="text-danger" v-if="error_info_signin.errors_login">{{error_info_signin.errors_login}}</p>
+            <div class="alert alert-danger" v-if="messageErrorLogin"> Invalid password or email, Please try again! </div>
             <div class="form-group">
-                <input 
+                <input
                     type="email"
-                    class="form-control "
+                    class="form-control"
                     placeholder="Email"
-                    v-model="signin_form.email"
+                    v-model="form_info.email"
                     required
                 />
             </div>
@@ -23,44 +24,43 @@
                     type="password"
                     class="form-control"
                     placeholder="Password"
-                    v-model="signin_form.password"
+                    v-model="form_info.password"
                     required
                 />
             </div>
             
-            <button type="submit" class="btn form-control text-light" id='btn-submit' >Login</button>
+            <button type="submit" class="btn form-control">Login</button>
         </form>
         
     </div>
-    <p class="text-center mt-3 text-black">Don't have an account yet? <router-link to="/register">Register</router-link></p>
-      </div>
+    <p class="text-center mt-2">Don't have an account yet? <router-link to="/register">Register</router-link></p>
+    </div>
     
   </section>
 </template>
 
 <script>
 export default {
-    emits: ['signIn'],
-    inject: ['error_info_signin'],
-
+    emits: ['login'],
+    props: ['messageErrorLogin'],
     data() {
-      return {
-        signin_form: {
-            email: '',
-            password: '',
-        },
-        // error: null,
-      }
+        return {
+            form_info: {
+                email: '',
+                password: ''
+            }
+        }
     },
     methods: {
-        loginInfo() { 
-            this.$emit('signIn', this.signin_form);
+        addMyLogin() {
+            this.$emit('login', this.form_info)
         }
     },
 };
 </script>
 
 <style scoped>
+
 .contain-body {
     background: url('../../assets/lastImg.jpg');
     background-size: cover;
@@ -81,12 +81,6 @@ export default {
   position: center center;
  
 }
-#nav-card{
-    background: #020269;
-}
-#btn-submit{
-     background: #020269;
-}
 .img-icon {
     margin-left: 40px;
     font-size: 20px;
@@ -94,33 +88,27 @@ export default {
 hr {
     font-weight: bolder;
     width: 25%;
-    background: white;
-    border: 1px solid white;
+    background: #020269;
+    border: 1px solid #020269;
 }
 .text-style {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
-#title{
-  color:  #efeff3;
-  
 
-}
-
-.btn-text {
+.btn-text { 
     border: none;
-    background: rgba(255, 255, 255, 0.81);
+    background: rgba(207, 204, 204, 0.81);
+    color: #020269;
     border-radius: 10px;
     font-family: Arial, Helvetica, sans-serif;
     padding: 7px;
     display: flex;
     align-items: center;
 }
-hr.new4 {
-  border: 2px solid  #020269 ;
+button{
+    background: #020269;
+    color: white;
 }
 </style>
-
-
-

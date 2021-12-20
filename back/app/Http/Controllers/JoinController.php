@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Join;
 
 class JoinController extends Controller
 {
@@ -13,7 +14,7 @@ class JoinController extends Controller
      */
     public function index()
     {
-        //
+        return Join::latest()->get();
     }
 
     /**
@@ -24,7 +25,19 @@ class JoinController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required',
+            'my_event_id' => 'required',
+        ]);
+
+        $join = new Join();
+
+        $join->user_id = $request->user_id;
+        $join->my_event_id = $request->my_event_id;
+
+        $join->save();
+
+        return response()->json(["message" => "Created", "data" => $join], 201);
     }
 
     /**
@@ -58,6 +71,6 @@ class JoinController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Join::destroy($id);
     }
 }
